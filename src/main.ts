@@ -6,7 +6,11 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.setGlobalPrefix('api');
-  app.enableCors();
+  app.enableCors({
+    origin: ['https://drive-customizer.vercel.app', 'http://localhost:3000'],
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+  });
 
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Drive Customizer API')
