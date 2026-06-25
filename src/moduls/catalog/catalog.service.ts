@@ -17,6 +17,16 @@ export class CatalogService {
     return { data: items };
   }
 
+  async getBySlug(slug: string) {
+    const item = await this.catalogModel.findOne({ slug }).exec();
+
+    if (!item) {
+      throw new NotFoundException(`Catalog item with slug ${slug} not found`);
+    }
+
+    return item;
+  }
+
   async create(data: CreateCatalogDto) {
     return await this.catalogModel.create(data);
   }

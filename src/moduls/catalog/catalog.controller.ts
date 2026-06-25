@@ -31,6 +31,15 @@ export class CatalogController {
     return this.catalogService.getAll();
   }
 
+  @Get('slug/:slug')
+  @ApiOperation({ summary: 'Get a catalog item by slug' })
+  @ApiParam({ name: 'slug', description: 'Catalog item slug' })
+  @ApiOkResponse({ description: 'Catalog item found' })
+  @ApiNotFoundResponse({ description: 'Catalog item not found' })
+  getBySlug(@Param('slug') slug: string) {
+    return this.catalogService.getBySlug(slug);
+  }
+
   @Post('creates')
   @ApiOperation({ summary: 'Create a catalog item' })
   @ApiCreatedResponse({ description: 'Catalog item created' })
