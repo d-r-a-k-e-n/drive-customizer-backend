@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Catalog } from '../../models/catalog';
+import { Catalog } from 'src/models/catalog';
 import { CreateCatalogDto } from './dto/create-catalog.dto';
 import { UpdateCatalogDto } from './dto/update-catalog.dto';
 
@@ -13,7 +13,6 @@ export class CatalogService {
 
   async getAll() {
     const items = await this.catalogModel.find().exec();
-
     return { data: items };
   }
 

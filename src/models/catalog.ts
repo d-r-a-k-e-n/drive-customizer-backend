@@ -4,16 +4,16 @@ import { Document } from 'mongoose';
 @Schema()
 export class Catalog extends Document {
   @Prop({ required: true })
-  name: string;
+  name!: string;
 
   @Prop({ required: true, unique: true })
-  slug: string;
+  slug!: string;
 
   @Prop({ required: true })
-  modelUrl: string;
+  modelUrl!: string;
 
   @Prop({ required: true })
-  previewUrl: string;
+  previewUrl!: string;
 }
 
 export const CatalogSchema = SchemaFactory.createForClass(Catalog);
