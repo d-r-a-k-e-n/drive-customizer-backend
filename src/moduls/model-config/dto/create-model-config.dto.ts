@@ -19,6 +19,9 @@ export class CreateModelConfigDto {
   @IsString()
   thumbnailUrl?: string;
 
+  @IsString()
+  backgroundColor!: string;
+
   @IsArray()
   config!: ConfigItem[];
 }

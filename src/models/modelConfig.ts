@@ -12,6 +12,9 @@ export class ModelConfig extends Document {
   @Prop()
   thumbnailUrl?: string;
 
+  @Prop()
+  backgroundColor!: string;
+
   @Prop([
     {
       meshId: { type: String, required: true },

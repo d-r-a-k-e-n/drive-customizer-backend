@@ -16,7 +16,18 @@ export class ModelConfigService {
     return { data: items };
   }
 
+  async getByModelId(modelId: string) {
+    const item = await this.modelConfigModel.findOne({ modelId }).exec();
+    return { data: item };
+  }
+
+  async getById(id: string) {
+    const item = await this.modelConfigModel.findById(id).exec();
+    return { data: item };
+  }
+
   async create(data: CreateModelConfigDto) {
-    return await this.modelConfigModel.create(data);
+    const item = await this.modelConfigModel.create(data);
+    return { data: item };
   }
 }
