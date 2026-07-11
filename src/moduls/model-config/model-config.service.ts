@@ -1,6 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
+import {
+  buildPaginationMeta,
+  PaginationQueryDto,
+  parsePaginationQuery,
+} from 'src/common/dto/pagination-query.dto';
 import { ModelConfig } from 'src/models/modelConfig';
 import { CreateModelConfigDto } from './dto/create-model-config.dto';
 
@@ -11,9 +16,38 @@ export class ModelConfigService {
     private modelConfigModel: Model<ModelConfig>,
   ) {}
 
-  async getAll() {
-    const items = await this.modelConfigModel.find().exec();
-    return { data: items };
+  async getAll(query: PaginationQueryDto = {}) {
+    const { page, limit, skip } = parsePaginationQuery(query);
+
+    const [items, total] = await Promise.all([
+      this.modelConfigModel
+        .find()
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+        .populate('modelId', 'previewUrl')
+        .lean()
+        .exec(),
+      this.modelConfigModel.countDocuments().exec(),
+    ]);
+
+    const data = items.map((item) => {
+      const catalog = item.modelId as unknown as {
+        _id: Types.ObjectId;
+        previewUrl?: string;
+      } | null;
+
+      return {
+        ...item,
+        modelId: catalog?._id?.toString() ?? String(item.modelId),
+        previewUrl: catalog?.previewUrl,
+      };
+    });
+
+    return {
+      data,
+      meta: buildPaginationMeta(total, page, limit),
+    };
   }
 
   async getByModelId(modelId: string) {

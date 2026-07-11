@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import {
   ApiCreatedResponse,
@@ -15,6 +16,7 @@ import {
   ApiParam,
   ApiTags,
 } from '@nestjs/swagger';
+import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
 import { CatalogService } from './catalog.service';
 import { CreateCatalogDto } from './dto/create-catalog.dto';
 import { UpdateCatalogDto } from './dto/update-catalog.dto';
@@ -25,10 +27,10 @@ export class CatalogController {
   constructor(private readonly catalogService: CatalogService) {}
 
   @Get('')
-  @ApiOperation({ summary: 'Get all catalog items' })
-  @ApiOkResponse({ description: 'List of catalog items' })
-  getAll() {
-    return this.catalogService.getAll();
+  @ApiOperation({ summary: 'Get paginated catalog items' })
+  @ApiOkResponse({ description: 'Paginated list of catalog items' })
+  getAll(@Query() query: PaginationQueryDto) {
+    return this.catalogService.getAll(query);
   }
 
   @Get('slug/:slug')
@@ -38,6 +40,15 @@ export class CatalogController {
   @ApiNotFoundResponse({ description: 'Catalog item not found' })
   getBySlug(@Param('slug') slug: string) {
     return this.catalogService.getBySlug(slug);
+  }
+
+  @Get(':id')
+  @ApiOperation({ summary: 'Get a catalog item by ID' })
+  @ApiParam({ name: 'id', description: 'Catalog item ID' })
+  @ApiOkResponse({ description: 'Catalog item found' })
+  @ApiNotFoundResponse({ description: 'Catalog item not found' })
+  getById(@Param('id') id: string) {
+    return this.catalogService.getById(id);
   }
 
   @Post('creates')
