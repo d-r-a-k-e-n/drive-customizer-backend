@@ -1,7 +1,7 @@
 import { Controller } from '@nestjs/common';
 import { ModelConfigService } from './model-config.service';
 import { Body, Get, Param, Post, Query } from '@nestjs/common';
-import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
+import { PaginationQueryDto } from '../../common/dto/pagination-query.dto';
 import { CreateModelConfigDto } from './dto/create-model-config.dto';
 
 @Controller('model-configs')
